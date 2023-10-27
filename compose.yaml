@@ -1,0 +1,29 @@
+volumes:
+  vapp: {}
+  vdb: {}
+services:
+  db:
+    build: dbserver
+    image: thdh/java-login-app:db_v1.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=dbpass
+      - MYSQL_DATABASE=demoDB
+    volumes:
+      - vdb:/var/lib/mysql
+    restart: always
+    
+  webapp:
+    build: appserver
+    image: thdh/java-login-app:app_v1.0
+    ports:
+      - "8080:8080"
+    volumes:
+      - vapp:/usr/local/tomcat/webapps
+  
+  web:
+    build: webserver
+    image: thdh/java-login-app:web_v1.0
+    ports:
+      - "80:80"
